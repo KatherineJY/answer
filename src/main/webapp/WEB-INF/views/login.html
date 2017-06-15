@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" href="http://localhost:8080/answer/resources/css/login.css">
+    <link href="http://localhost:8080/answer/resources/css/reset.css" rel="stylesheet" />
+    <script type="text/javascript" src="http://localhost:8080/answer/resources/script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="http://localhost:8080/answer/resources/script/jquery.cookie.js"></script>
+</head>
+<body>
+    <img src="http://localhost:8080/answer/resources/img/common/back.jpg" alt="" class="img-holder">
+    <div class="panel">
+        <div class="info-holder">
+            <div class="input-holder">
+               学 号
+                <input name="studentnumber" type="number" placeholder=" ">
+            </div>
+            <div class="input-holder">
+                密 码
+                <input name="password" type="password" max="20" placeholder=" ">
+            </div>
+            <div class="notice-holder">
+                <a href="register.html">注 册</a>
+
+                <a href="findback.html">找回密码</a>
+            </div>
+        </div>
+        <a class="btnn login-btn" href="problem.html">登 录</a>
+        <a class="btnn" href="answer.html">返 回</a>
+
+    </div>
+     <script>
+        $(function () {
+            $(document).ready(function(){
+                if( $.cookie("id") != null ){
+                    $("input[name='studentnumber']").val( $.cookie('id') );
+                    $("input[name='password']").val( $.cookie('pwd') )
+                }
+            })          
+
+            $(".login-btn").click(function () {
+                var id = $("input[name='studentnumber']").val();
+                var pwd = $("input[name='password']").val();
+                var url = "user/login/"+id+"/"+pwd;
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    contentType: "application/json",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.successful) {
+                            $.cookie("id",id,{path:'/',expires:1000});
+                            $.cookie("pwd",pwd,{path:'/',expires:1000});
+                            $.cookie("accuracy",0.0,{path:'/',expires:1000});
+                            $.cookie("useTime",301,{path:'/',expires:1000});
+                            $(window).attr('location', 'problem.html');
+                        }
+                    }
+                });
+            });
+        })
+
+    </script> 
+
+</body>
+</html>

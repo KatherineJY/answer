@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>findback</title>
+    <link rel="stylesheet" href="http://localhost:8080/answer/resources/css/findback.css">
+    <link href="http://localhost:8080/answer/resources/css/reset.css" rel="stylesheet" />
+    <script type="text/javascript" src="http://localhost:8080/answer/resources/script/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="http://localhost:8080/answer/resources/script/jquery.cookie.js"></script>
+</head>
+<body>
+    <img src="http://localhost:8080/answer/resources/img/common/back.jpg" alt="" class="img-holder">
+    <div class="panel">
+        <div class="info-holder">
+            <div class="input-holder">
+                学 号
+                <input name="studentnumber" type="number" placeholder=" ">
+            </div>
+            <div class="input-holder">
+                姓 名
+                <input name="name" type="text" placeholder=" ">
+            </div>
+            <div class="input-holder">
+                电 话
+                <input name="phone" type="password" max="20" placeholder=" ">
+            </div>
+        </div>
+        <a class="btnn find-btn" href="register.html">重 新 注 册</a>
+        <a class="btnn" href="answer.html">返 回</a>
+
+    </div>
+     <script>
+        $(function () {      
+            $(".find-btn").click(function () {
+                var sendData = {
+                    id:$("input[name='studentnumber']").val(),
+                    name:$("input[name='name']").val(),
+                    phone:phone = $("input[name='phone']").val(),
+                }
+
+                $.ajax({
+                    method: "POST",
+                    url:"user/findPwd",
+                    contentType: "application/json",
+                    data: JSON.stringify(sendData),
+                    dataType: "json",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.successful) {
+                            $(window).attr('location', 'register.html');
+                        }
+                    }
+
+                });
+            });
+        })
+
+    </script> 
+
+</body>
+</html>

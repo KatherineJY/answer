@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>login</title>
+<link rel="stylesheet" href="http://localhost:8080/answer/resources/css/login-mobile.css">
+<link href="http://localhost:8080/answer/resources/css/reset.css" rel="stylesheet" />
+<script type="text/javascript" src="http://localhost:8080/answer/resources/script/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<div class="img-holder"></div>
+	<div class="panel">
+		<div class="info-holder">
+			<div class="input-holder">
+				姓 名 <input name="name" type="text">
+			</div>
+			<div class="input-holder">
+				学 号 <input name="studentnumber" type="number" max="8" min="8"
+					placeholder="研究生仅填学号前八位">
+			</div>
+			<div class="input-holder">
+				联 系 方 式 <input name="phone" type="number" max="11" min="8">
+			</div>
+		</div>
+		<a class="btnn login-btn" href="problem.html">登 录</a> <a class="btnn"
+			href="answer.html">返 回</a>
+		<script>
+        $(function () {
+            $(document).ready(function(){
+                if( $.cookie("id") != null ){
+                    $("input[name='studentnumber']").val( $.cookie('id') );
+                    $("input[name='password']").val( $.cookie('pwd') )
+                }
+            })          
+
+            $(".login-btn").click(function () {
+                var id = $("input[name='studentnumber']").val();
+                var pwd = $("input[name='password']").val();
+                var url = "user/login/"+id+"/"+pwd;
+                $.ajax({
+                    method: "POST",
+                    url: url,
+                    contentType: "application/json",
+                    success: function (result) {
+                        console.log(result);
+                        if (result.successful) {
+                            $.cookie("id",id,{path:'/',expires:1000});
+                            $.cookie("pwd",pwd,{path:'/',expires:1000});
+                            $.cookie("accuracy",0.0,{path:'/',expires:1000});
+                            $.cookie("useTime",301,{path:'/',expires:1000});
+                            $(window).attr('location', 'problem.html');
+                        }
+                    }
+                });
+            });
+        })
+
+    </script> 
+	</div>
+</body>
+</html>
